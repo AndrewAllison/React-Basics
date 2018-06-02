@@ -12,11 +12,25 @@ class IndecisionApp extends React.Component {
     }
   }
 
-  componentDidMount(){
-    console.log('componentDidMount', this);
+  componentDidMount() {
+    try {
+      const json = localStorage.getItem('options');
+      const options = JSON.parse(json);
+      if (options) {
+        this.setState(() => ({
+          options
+        }));
+      }
+    } catch (e) {
+      // allow fall back to defaults.
+    }
   }
 
-  componentDidUpdate(prevProps, prevStates){
+  componentDidUpdate(prevProps, prevStates) {
+    if (prevStates.options.left !== this.state.options.length) {
+      const json = JSON.stringify(this.state.options);
+      localStorage.setItem('options', json);
+    }
     console.log('componentDidUpdate', prevProps, prevStates, this.state);
   }
 
@@ -108,7 +122,8 @@ const Action = (props) => {
 const Options = (props) => {
   return (
     <div>
-      <p>You Have {props.options.length}</p>
+      {props.options.length === 0 && <p>Pease enter an option to get started!</p>}
+      {props.options.length > 0 && <p>You Have {props.options.length}</p>}
       <ul>
         {
           props.options.map(option => (
@@ -119,7 +134,7 @@ const Options = (props) => {
             />
           ))
         }
-        <button onClick={props.handleDeleteOptions}>Remove All</button>
+        {props.options.length > 0 && <button onClick={props.handleDeleteOptions}>Remove All</button>}
       </ul>
     </div>
   );
@@ -152,9 +167,12 @@ class AddOption extends React.Component {
     e.preventDefault();
     const option = e.target.elements.option.value.trim();
     const error = this.props.handleAddOption(option);
-    this.setState(() => ({
-      error
-    }));
+
+    this.setState(() => ({error}));
+
+    if (!error) {
+      e.target.elements.option.value = '';
+    }
   }
 
   render() {
