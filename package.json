@@ -6,7 +6,8 @@
   "scripts": {
     "babel": "babel ./src/app.js --out-file public/scripts/app.js --presets=env,react --watch",
     "serve": "live-server ./public/",
-    "build": "webpack --watch"
+    "build": "webpack",
+    "dev-server": "webpack-dev-server"
   },
   "dependencies": {
     "@types/react": "^16.3.14",
@@ -19,6 +20,7 @@
     "react": "16.0.0",
     "react-dom": "^16.4.0",
     "validator": "8.0.0",
-    "webpack": "3.1.0"
+    "webpack": "3.1.0",
+    "webpack-dev-server": "2.5.1"
   }
 }
