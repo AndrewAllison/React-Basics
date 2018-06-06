@@ -1,6 +1,8 @@
 import React from 'react';
 
 const Option = (props) => {
+  console.log('testign');
+
   return (
     <li>
       {props.text}
